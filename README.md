@@ -114,3 +114,11 @@ useful for debugging:
 [ "SELECT * from some_table where team_uuid = ? ", "abcdef"]
 
 ```
+
+# Authors
+
+<sup>In alphabetical order</sup>
+
+- [Afonso Tsukamoto](https://github.com/AfonsoTsukamoto)
+- [Łukasz Korecki](https://github.com/lukaszkorecki)
+- [Marketa Adamova](https://github.com/MarketaAdamova)
