@@ -1,6 +1,10 @@
 (defproject nomnom/utility-belt.sql "0.2.2"
   :description "Tools for working with Postgres (queries, connection pool component, helpers etc)"
   :url "https://github.com/nomnom-insights/nomnom.utility-belt.sql"
+  :deploy-repositories {"clojars" {:sign-releases false
+                                   :username [:gpg :env/clojars_username]
+                                   :password [:gpg :env/clojars_password]}}
+
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.postgresql/postgresql "42.2.8"]
                  [org.clojure/java.jdbc "0.7.10"]
