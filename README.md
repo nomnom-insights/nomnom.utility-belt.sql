@@ -1,5 +1,9 @@
 # utility-belt.sql
 
+[![Clojars Project](https://img.shields.io/clojars/v/nomnom/utility-belt.sql.svg)](https://clojars.org/nomnom/utility-belt.sql)
+
+[![CircleCI](https://circleci.com/gh/nomnom-insights/nomnom.utility-belt.sql.svg?style=svg)](https://circleci.com/gh/nomnom-insights/nomnom.utility-belt.sql)
+
 > A set of utilities for working with JDBC (SQL) data stores
 
 Consist of:
