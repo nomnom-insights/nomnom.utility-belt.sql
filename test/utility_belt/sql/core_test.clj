@@ -13,7 +13,7 @@
    :server-name  (or (System/getenv "PG_HOST") "127.0.0.1")
    :port-number "5432"
    :maximum-pool-size 10
-   :database-name (or (System/getenv "PG_DB") "utility_belt")})
+   :database-name (or (System/getenv "PG_DB") "utility_belt_test")})
 
 (model/load-sql-file "utility_belt/sql/people.sql")
 
