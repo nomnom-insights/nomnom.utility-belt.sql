@@ -1,8 +1,9 @@
 (ns utility-belt.sql.core-test
   (:require [clojure.test :refer :all]
             [utility-belt.sql.component.connection-pool :as cp]
-            [utility-belt.sql.conv :as conv]
-            [utility-belt.sql.model :as model]))
+            [utility-belt.sql.helpers :as helpers]
+            [utility-belt.sql.model :as model]
+            [clojure.java.jdbc :as jdbc]))
 
 (def connection-spec
   {:pool-name  "test"
@@ -40,3 +41,19 @@
          (delete* @conn {:email "dat@test.com"})))
   (is (= 1
          (count (get-all* @conn)))))
+
+(deftest transaction-operation
+  (helpers/with-transaction [tx @conn]
+    (add* tx {:name "yest" :email "test@test.com" :attributes {:bar 1 :foo [:a :b :c]}})
+    (add* tx {:name "who" :email "dat@test.com" :attributes {:bar 1 :foo {:ok :dawg}}})
+    ;; tx not finished yet so using db-pool no resu
+    (is (= 0 (count (get-all* @conn))))
+    (is (= 2 (count (get-all* tx)))))
+  (is (= 2 (count (get-all* @conn))))
+  (helpers/with-transaction [tx @conn]
+    (add* tx {:name "yest" :email "test@test.com" :attributes {:bar 1 :foo [:a :b :c]}})
+    (try
+      (add* tx {:name nil :email "dat@test.com" :attributes {:bar 1 :foo {:ok :dawg}}})
+      (catch Exception e)))
+  ;; first insert should be cancelled
+  (is (= 2 (count (get-all* @conn)))))
