@@ -8,12 +8,12 @@
 (def connection-spec
   {:pool-name  "test"
    :adapter "postgresql"
-   :username (or (System/getenv "PG_USER") "nomnom")
+   :username (or (System/getenv "PG_USER") "utility_belt")
    :password (or (System/getenv "PG_PASSWORD") "password")
    :server-name  (or (System/getenv "PG_HOST") "127.0.0.1")
    :port-number "5432"
    :maximum-pool-size 10
-   :database-name (or (System/getenv "PG_DB") "nomnom_test")})
+   :database-name (or (System/getenv "PG_DB") "utility_belt")})
 
 (model/load-sql-file "utility_belt/sql/people.sql")
 
