@@ -14,6 +14,7 @@ Consist of:
 
 Built on top of:
 
+- [JDBC.next](https://github.com/seancorfield/next-jdbc)
 - [Cheshire](https://github.com/dakrone/cheshire) for JSON
 - [HugSQL](https://www.hugsql.org) for SQL queries
 - [clj-time](https://github.com/clj-time/clj-time) for datetime handling
@@ -71,6 +72,15 @@ Dependencies, in `:dev` profile:
                    :dependencies [[com.h2database/h2 "1.4.196"]]}}
 ```
 
+## Testing this library
+
+All tests require a real Postgres instance. You can start it locally via Docker, by running:
+
+```
+./script/start-test-postgres
+```
+
+It will setup a Postgres 9.6 instance, running on port 5434.
 
 ## Defining SQL queries and functions
 
