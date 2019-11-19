@@ -17,4 +17,5 @@
   :plugins [[lein-cloverage "1.1.1" :exclusions [org.clojure/clojure]]]
   :profiles {:dev
              {:dependencies [[org.clojure/tools.logging "0.5.0"]
+                             [ch.qos.logback/logback-classic "1.2.3"]
                              [com.stuartsierra/component "0.4.0"]]}})
