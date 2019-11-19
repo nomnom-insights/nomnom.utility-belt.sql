@@ -1,4 +1,7 @@
 (ns utility-belt.sql.conv
+  )
+(comment
+  (comment
   (:require [clojure.java.jdbc :as jdbc]
             [cheshire.core :as json]
             [clj-time.coerce :as coerce])
@@ -59,3 +62,4 @@
       (if-let [elem-type (when type-name (second (re-find #"^_(.*)" type-name)))]
         (.setObject s i (.createArrayOf conn elem-type (to-array v)))
         (.setObject s i (jdbc/sql-value v))))))
+)

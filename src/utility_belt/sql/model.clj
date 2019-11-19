@@ -1,12 +1,12 @@
 (ns utility-belt.sql.model
   (:require [hugsql.core :as hugsql]
-            [hugsql.adapter.clojure-java-jdbc :as adapter]))
+            [hugsql.adapter.next-jdbc :as next-adapter]))
 
 (defn load-sql-file
   "Loads given SQL file and injects db function definitions into current namespace"
   [file]
   (hugsql/def-db-fns file
-    {:adapter (adapter/hugsql-adapter-clojure-java-jdbc)}))
+    {:adapter (next-adapter/hugsql-adapter-next-jdbc)}))
 
 (defn load-sql-file-vec-fns
   "Loads given SQL file and injects debug versions of db functions.
