@@ -64,12 +64,17 @@ Using H2 for in-memory or file based DB:
 {:adapter "h2" :url "jdbc:h2:mem:"}
 ```
 
-Dependencies, in `:dev` profile:
+Dependencies, in `:dev` Lein profile:
 
 ```clojure
   :profiles {:dev {:resource-paths ["dev-resources"]
                    :dependencies [[com.h2database/h2 "1.4.196"]]}}
 ```
+
+#### Running utility-belt.sql test locally
+
+1. start test Postgres instance `./script/test-postgres`
+2. run tests via `lein test` or in the repl via your test runner of choice
 
 
 ## Defining SQL queries and functions

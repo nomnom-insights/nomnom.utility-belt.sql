@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+docker run --rm -it -p 5434:5432 \
+       -e POSTGRES_USER=utility_belt \
+       -e POSTGRES_PASSWORD=password \
+       -e POSTGRES_DB=utility_belt_test \
+       postgres:9.6
