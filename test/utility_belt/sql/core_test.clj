@@ -11,7 +11,7 @@
    :username (or (System/getenv "PG_USER") "utility_belt")
    :password (or (System/getenv "PG_PASSWORD") "password")
    :server-name  (or (System/getenv "PG_HOST") "127.0.0.1")
-   :port-number "5434"
+   :port-number (Integer/parseInt (or (System/getenv "PG_PORT") "5434"))
    :maximum-pool-size 10
    :database-name (or (System/getenv "PG_DB") "utility_belt_test")})
 

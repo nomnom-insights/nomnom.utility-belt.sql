@@ -8,7 +8,6 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.postgresql/postgresql "42.2.8"]
                  [seancorfield/next.jdbc "1.0.10"]
-
                  [cheshire "5.9.0"]
                  [clj-time "0.15.2"]
                  [com.layerware/hugsql "0.5.1"]

@@ -65,22 +65,17 @@ Using H2 for in-memory or file based DB:
 {:adapter "h2" :url "jdbc:h2:mem:"}
 ```
 
-Dependencies, in `:dev` profile:
+Dependencies, in `:dev` Lein profile:
 
 ```clojure
   :profiles {:dev {:resource-paths ["dev-resources"]
                    :dependencies [[com.h2database/h2 "1.4.196"]]}}
 ```
 
-## Testing this library
+#### Running utility-belt.sql test locally
 
-All tests require a real Postgres instance. You can start it locally via Docker, by running:
-
-```
-./script/start-test-postgres
-```
-
-It will setup a Postgres 9.6 instance, running on port 5434.
+1. start test Postgres instance `./script/test-postgres`
+2. run tests via `lein test` or in the repl via your test runner of choice
 
 ## Defining SQL queries and functions
 
