@@ -94,10 +94,7 @@
     (add* tx {:name "yest"
               :email "test@test.com"
               :attributes {:bar 1
-                           :foo [:a
-                                 :b
-                                 :c]}
-
+                           :foo [:a :b :c]}
               :confirmed_at #inst "2019-02-03"})
     (add* tx {:name "who"
               :email "dat@test.com"
@@ -125,3 +122,20 @@
                (ex-message e)))))
     (testing "first insert should be cancelled"
       (is (= 2 (count (get-all* @conn)))))))
+
+(deftest raw-execute
+  (add* @conn {:name "yest"
+               :email "test@test.com"
+               :attributes {:bar 1
+                            :foo [:a :b :c]}
+               :confirmed_at #inst "2019-02-03"})
+  (is (= [{:people/attributes {:bar 1 :foo ["a" "b" "c"]}
+           :people/confirmed_at #inst "2019-02-03"
+           :people/email "test@test.com"
+           :people/name "yest"}]
+         (map
+          #(dissoc %
+                   :people/id
+                   :people/created_at
+                   :people/updated_at)
+          (helpers/execute @conn ["select * from people"])))))
