@@ -34,15 +34,14 @@ Then use can use the running component as an argument passed to HugSQL functions
 
 ### Usage with Ragtime
 
-[Ragtime](https://github.com/weavejester/ragtime) is a simple migration library, which provides support for SQL migrations via [ragtime.jdbc].
-To run migrations with the connection pool component, you need to use older, `clojure.java.jdbc` format of passing the connection:
+[Ragtime](https://github.com/weavejester/ragtime) is a simple migration library, which provides support for SQL migrations via `ragtime.jdbc`.
 
 
 ```clojure
 (require '[ragtime.repl :as repl]
          '[ragtime.jdbc :as jdbc])
 
-(repl/migrate {:datastore (jdbc/sql-database {:datasource (:pool connection-component)})
+(repl/migrate {:datastore (jdbc/sql-database connection-pool)
                :migrations (jdbc/load-resources "migrations")})
 
 ```

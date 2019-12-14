@@ -4,7 +4,7 @@
             [next.jdbc.protocols :as jdbc.protocols]
             [com.stuartsierra.component :as component]))
 
-(defrecord HikariCP [config pool]
+(defrecord ConnectionPool [config datasource]
   component/Lifecycle
   (start [this]
     (log/infof "%s connecting=%s %s:%s"
@@ -13,22 +13,22 @@
                (:server-name config)
                (:port-number config))
     (let [pool (hikari/make-datasource config)]
-      (assoc this :pool pool)))
+      (assoc this :datasource pool)))
   (stop [this]
     (log/warnf "%s disconnecting=%s %s:%s"
                (:pool-name config)
                (:database-name config)
                (:server-name config)
                (:port-number config))
-    (when pool
-      (hikari/close-datasource pool))
-    (assoc this :pool nil))
+    (when datasource
+      (hikari/close-datasource datasource))
+    (assoc this :datasource nil))
   jdbc.protocols/Connectable
   (get-connection [this opts]
-    (:pool this))
+    (:datasource this))
   jdbc.protocols/Sourceable
   (get-datasource [this]
-    (:pool this)))
+    (:datasource this)))
 
 (defn create [config]
-  (map->HikariCP {:config config}))
+  (map->ConnectionPool {:config config}))
