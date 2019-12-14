@@ -1,17 +1,14 @@
 (ns utility-belt.sql.conv
-  (:require [next.jdbc :as jdbc]
-            [next.jdbc.result-set :as jdbc.result-set]
+  (:require [next.jdbc.result-set :as jdbc.result-set]
             [next.jdbc.prepare :as jdbc.prepare]
             [cheshire.core :as json]
-            [clj-time.coerce :as coerce]
-            [clojure.tools.logging :as log])
+            [clj-time.coerce :as coerce])
   (:import (clojure.lang IPersistentMap IPersistentVector)
            (org.postgresql.util PGobject)
            (org.joda.time DateTime)
            (java.util Date)
            (java.sql PreparedStatement)
            (org.postgresql.jdbc PgArray)))
-
 
 (extend-protocol jdbc.result-set/ReadableColumn
   PgArray
@@ -26,12 +23,10 @@
         "jsonb" (json/parse-string value true)
         value))))
 
-
 (defn value-to-json-pgobject [value]
-    (doto (PGobject.)
+  (doto (PGobject.)
     (.setType "jsonb")
     (.setValue (json/generate-string value))))
-
 
 (extend-protocol jdbc.prepare/SettableParameter
   Date

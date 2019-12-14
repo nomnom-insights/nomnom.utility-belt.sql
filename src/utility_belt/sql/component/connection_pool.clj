@@ -12,7 +12,7 @@
                (:database-name config)
                (:server-name config)
                (:port-number config))
-      (let [pool (hikari/make-datasource config)]
+    (let [pool (hikari/make-datasource config)]
       (assoc this :pool pool)))
   (stop [this]
     (log/warnf "%s disconnecting=%s %s:%s"
@@ -28,8 +28,7 @@
     (:pool this))
   jdbc.protocols/Sourceable
   (get-datasource [this]
-    (:pool this))
-  )
+    (:pool this)))
 
 (defn create [config]
   (map->HikariCP {:config config}))
