@@ -1,4 +1,7 @@
 -- :name setup* :!
+create extension if not exists "hstore";
+create extension if not exists "uuid-ossp";
+
 create table if not exists people (
 id serial primary key,
 name text not null,

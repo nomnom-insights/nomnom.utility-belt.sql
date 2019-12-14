@@ -1,9 +1,9 @@
 (ns utility-belt.sql.core-test
   (:require [clojure.test :refer :all]
+            [utility-belt.sql.conv]
             [utility-belt.sql.component.connection-pool :as cp]
             [utility-belt.sql.helpers :as helpers]
-            [utility-belt.sql.model :as model]
-            [clojure.java.jdbc :as jdbc]))
+            [utility-belt.sql.model :as model]))
 
 (def connection-spec
   {:pool-name  "test"
@@ -21,10 +21,12 @@
 
 (use-fixtures :each (fn [test-fn]
                       (reset! conn (.start (cp/create connection-spec)))
-                      (setup* @conn)
-                      (test-fn)
-                      (delete-all* @conn)
-                      (.stop @conn)))
+                      (try
+                        (setup* @conn)
+                        (test-fn)
+                        (delete-all* @conn)
+                        (finally
+                          (.stop @conn)))))
 
 (deftest crud-operations
   (is (= [] (get-all* @conn)))
@@ -37,7 +39,7 @@
          (get-all* @conn)))
   (is (= [{:name "yest" :email "test@test.com" :attributes {:bar 1 :foo ["a" "b" "c"]}}]
          (get-all* @conn {:email "test@test.com"})))
-  (is (= 1
+  (is (= {:next.jdbc/update-count 1}
          (delete* @conn {:email "dat@test.com"})))
   (is (= 1
          (count (get-all* @conn)))))

@@ -5,6 +5,7 @@
                                    :username :env/clojars_username
                                    :password :env/clojars_password}}
 
+  :warn-on-reflection true
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.postgresql/postgresql "42.2.9"]
                  [seancorfield/next.jdbc "1.0.11"]
