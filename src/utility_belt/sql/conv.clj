@@ -7,6 +7,8 @@
             [clojure.tools.logging :as log])
   (:import (clojure.lang IPersistentMap IPersistentVector)
            (org.postgresql.util PGobject)
+           (org.joda.time DateTime)
+           (java.util Date)
            (java.sql PreparedStatement)
            (org.postgresql.jdbc PgArray)))
 
@@ -32,6 +34,14 @@
 
 
 (extend-protocol jdbc.prepare/SettableParameter
+  Date
+  (set-parameter [value statement idx]
+    (.setTimestamp ^PreparedStatement statement idx
+                   (coerce/to-sql-time value)))
+  DateTime
+  (set-parameter [value statement idx]
+    (.setTimestamp ^PreparedStatement statement idx
+                   (coerce/to-sql-time value)))
   IPersistentMap
   (set-parameter [value statement idx]
     (.setObject ^PreparedStatement statement idx

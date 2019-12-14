@@ -18,4 +18,5 @@
   :profiles {:dev
              {:dependencies [[org.clojure/tools.logging "0.5.0"]
                              [ch.qos.logback/logback-classic "1.2.3"]
+                             [nomnom/utility-belt "1.2.1"]
                              [com.stuartsierra/component "0.4.0"]]}})
