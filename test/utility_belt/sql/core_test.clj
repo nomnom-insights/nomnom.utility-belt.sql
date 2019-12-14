@@ -108,7 +108,7 @@
       (is (= 0 (count (get-all* @conn)))))
     (is (= 2 (count (get-all* tx)))))
   (is (= 2 (count (get-all* @conn))))
-  (testing "failing within transaction - should not aadd rows"
+  (testing "failing within transaction - should not aad rows if an exception is throwna"
     (try
       (helpers/with-transaction [tx @conn]
         (add* tx {:name "yest"

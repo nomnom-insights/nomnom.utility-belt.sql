@@ -17,7 +17,7 @@ jobs:
       CIRCLE: "yep"
       PG_USER: utility_belt
       PG_PASSWORD: password
-      PG_DB: utility_belt
+      PG_DB: utility_belt_test
       PG_HOST: localhost
       PG_PORT: 5432
 
