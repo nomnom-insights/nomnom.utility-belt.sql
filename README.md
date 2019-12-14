@@ -14,7 +14,7 @@ Consist of:
 
 Built on top of:
 
-- [JDBC.next](https://github.com/seancorfield/next-jdbc)
+- [next.jdbc](https://github.com/seancorfield/next-jdbc)
 - [Cheshire](https://github.com/dakrone/cheshire) for JSON
 - [HugSQL](https://www.hugsql.org) for SQL queries
 - [clj-time](https://github.com/clj-time/clj-time) for datetime handling
@@ -52,9 +52,9 @@ Postgres configuration, with [Aero](https://github.com/juxt/aero):
 
 ```
 
+## Coercions and JSONB
 
-
-Note: `utility-belt.sql` comes with all required dependencies for communication with Postgres (including a connection pool, PG adapter and SQL query interface).
+`utility-belt.sql` comes with all required dependencies for communication with Postgres (including a connection pool, PG adapter and SQL query interface) as wells as necessary coercion setup for Joda DateTime (via `clj-time`) JSONB data type. To enable these coercions require `utility-belt.sql.conv` namespace.
 
 
 ### Tests
@@ -81,6 +81,8 @@ Dependencies, in `:dev` Lein profile:
 
 We're using [HugSQL](https://hugsql.org) for defining SQL queries and turning them into functions.
 
+> 🙋 **Note** by default, `load-sql-file` uses backwards compatible mode, and will use lower-case, unqualified keywords when mapping column names in result sets.
+
 `utility-belt.sql.model` namespace provides a helper which makes it easy to load these SQL files:
 
 file: `some.model.sql`
@@ -102,6 +104,12 @@ file: `some_model.clj`
 
 ;; will pull in `get-all*` into current ns
 ```
+
+
+By convention, it's best to add `*` suffix to queries defined in the SQL file, and create corresponding function in the Clojure file loading it. E.g.
+
+SQL file function: `get-all*`
+Clojure file function, `get-all`, calls `get-all*`
 
 ###  Debugging queries
 
