@@ -22,7 +22,7 @@ Built on top of:
 
 Mostly used with Postgres and H2, but should work with anything that's supported by JDBC.
 
-## Usage
+## Connection pool component
 
 
 ```clojure
@@ -30,7 +30,22 @@ Mostly used with Postgres and H2, but should work with anything that's supported
   (component/start (utility-belt.sql.component.connection-pool/create config))
 ```
 
-Then use can use the running component as an argument passed to HugSQL functions or as the connection to `clojure.tools.jdbc`
+Then use can use the running component as an argument passed to HugSQL functions or as the connection to `nextjdbc` functions.
+
+### Usage with Ragtime
+
+[Ragtime](https://github.com/weavejester/ragtime) is a simple migration library, which provides support for SQL migrations via [ragtime.jdbc].
+To run migrations with the connection pool component, you need to use older, `clojure.java.jdbc` format of passing the connection:
+
+
+```clojure
+(require '[ragtime.repl :as repl]
+         '[ragtime.jdbc :as jdbc])
+
+(repl/migrate {:datastore (jdbc/sql-database {:datasource (:pool connection-component)})
+               :migrations (jdbc/load-resources "migrations")})
+
+```
 
 ## Configuration
 
