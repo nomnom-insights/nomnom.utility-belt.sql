@@ -8,12 +8,12 @@
   :warn-on-reflection true
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.postgresql/postgresql "42.2.9"]
-                 [seancorfield/next.jdbc "1.0.11"]
+                 [seancorfield/next.jdbc "1.0.13"]
                  [cheshire "5.9.0"]
                  [clj-time "0.15.2"]
                  [com.layerware/hugsql "0.5.1"]
-                 [com.layerware/hugsql-adapter-next-jdbc "0.5.1"]
-                 [hikari-cp "2.9.0"]]
+                 [com.layerware/hugsql-adapter-next-jdbc "0.5.1" :exclusions [seancorfield/next.jdbc]]
+                 [hikari-cp "2.10.0"]]
   :plugins [[lein-cloverage "1.1.1" :exclusions [org.clojure/clojure]]]
   :profiles {:dev
              {:dependencies [[org.clojure/tools.logging "0.5.0"]
