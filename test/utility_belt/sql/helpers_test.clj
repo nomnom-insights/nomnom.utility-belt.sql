@@ -37,7 +37,6 @@
                    :people/updated_at)
           (helpers/execute @conn ["select * from people"])))))
 
-
 (deftest transaction-operation
   (helpers/with-transaction [tx @conn]
     (people/add* tx {:name "yest"
@@ -55,19 +54,19 @@
     (is (= 2 (count (people/get-all* tx)))))
   (is (= 2 (count (people/get-all* @conn))))
   (testing "failing within transaction - should not aad rows if an exception is throwna"
-    (try
-      (helpers/with-transaction [tx @conn]
-        (people/add* tx {:name "yest"
-                         :email "test@test.com"
-                         :confirmed-at #inst "2019-02-03"
-                         :attributes {:bar 1
-                                      :foo [:a :b :c]}})
+    (helpers/with-transaction [tx @conn {:rollback-only true}]
+      (people/add* tx {:name "yest"
+                       :email "test@test.com"
+                       :confirmed-at #inst "2019-02-03"
+                       :attributes {:bar 1
+                                    :foo [:a :b :c]}})
+      (try
         (people/add* tx {:name nil
                          :email "dat@test.com"
                          :attributes {:bar 1
-                                      :foo {:ok :dawg}}}))
-      (catch Exception e
-        (is (= "Parameter Mismatch: :confirmed-at parameter data not found."
-               (ex-message e)))))
+                                      :foo {:ok :dawg}}})
+        (catch Exception e
+          (is (= "Parameter Mismatch: :confirmed-at parameter data not found."
+                 (ex-message e))))))
     (testing "first insert should be cancelled"
       (is (= 2 (count (people/get-all* @conn)))))))
