@@ -16,7 +16,7 @@
    :maximum-pool-size 10
    :database-name (or (System/getenv "PG_DB") "utility_belt_test")})
 
-(model/load-sql-file "utility_belt/sql/people.sql")
+(model/load-sql-file "utility_belt/sql/people.sql" {:mode :kebab-maps})
 
 (def conn (atom nil))
 
@@ -46,7 +46,7 @@
             :email "test@test.com"
             :attributes {:bar 1
                          :foo ["a" "b" "c"]}
-            :confirmed_at #inst "2019-06-24"}]
+            :confirmed-at #inst "2019-06-24"}]
           (add* @conn {:name "yest"
 
                        :email "test@test.com"
@@ -55,39 +55,42 @@
                                     :foo [:a
                                           :b
                                           :c]}
-                       :confirmed_at (time/->date-time "2019-06-24")})))
+                       :confirmed-at (time/->date-time "2019-06-24")})))
   (is (= [{:name "who"
            :email "dat@test.com"
            :attributes
            {:bar 1
             :foo {:ok "dawg"}}
-           :confirmed_at #inst "2018-03-12T00:13:24Z"}]
+           :confirmed-at #inst "2018-03-12T00:13:24Z"}]
          (add* @conn {:name "who"
                       :email "dat@test.com"
                       :attributes {:bar 1
                                    :foo {:ok :dawg}}
-                      :confirmed_at (time/->date-time "2018-03-12T00:13:24Z")})))
+                      :confirmed-at (time/->date-time "2018-03-12T00:13:24Z")})))
   (is (= [{:name "who"
            :email "dat@test.com"
            :attributes {:bar 1
                         :foo {:ok "dawg"}}
-           :confirmed_at #inst  "2018-03-12T00:13:24Z"}
+           :confirmed-at #inst  "2018-03-12T00:13:24Z"}
           {:name "yest"
            :email "test@test.com"
            :attributes {:bar 1
                         :foo ["a" "b" "c"]}
-           :confirmed_at #inst "2019-06-24"}]
+           :confirmed-at #inst "2019-06-24"}]
          (get-all* @conn)))
   (is (= [{:name "yest"
            :email "test@test.com"
            :attributes {:bar 1
                         :foo ["a" "b" "c"]}
-           :confirmed_at #inst "2019-06-24"}]
+           :confirmed-at #inst "2019-06-24"}]
          (get-all* @conn {:email "test@test.com"})))
   (is (= {:next.jdbc/update-count 1}
+         (set-email* @conn {:old-email "test@test.com"
+                            :new-email "test2@test.com"})))
+  (is (= {:next.jdbc/update-count 1}
          (delete* @conn {:email "dat@test.com"})))
-  (is (= 1
-         (count (get-all* @conn)))))
+  (is (= {:count 1}
+         (count-all* @conn))))
 
 (deftest transaction-operation
   (helpers/with-transaction [tx @conn]
@@ -95,12 +98,12 @@
               :email "test@test.com"
               :attributes {:bar 1
                            :foo [:a :b :c]}
-              :confirmed_at #inst "2019-02-03"})
+              :confirmed-at #inst "2019-02-03"})
     (add* tx {:name "who"
               :email "dat@test.com"
               :attributes {:bar 1
                            :foo {:ok :dawg}}
-              :confirmed_at #inst "2019-02-03"})
+              :confirmed-at #inst "2019-02-03"})
     (testing  "tx not finished yet so using db-pool no results should be reutnred"
       (is (= 0 (count (get-all* @conn)))))
     (is (= 2 (count (get-all* tx)))))
@@ -110,7 +113,7 @@
       (helpers/with-transaction [tx @conn]
         (add* tx {:name "yest"
                   :email "test@test.com"
-                  :confirmed_at #inst "2019-02-03"
+                  :confirmed-at #inst "2019-02-03"
                   :attributes {:bar 1
                                :foo [:a :b :c]}})
         (add* tx {:name nil
@@ -118,7 +121,7 @@
                   :attributes {:bar 1
                                :foo {:ok :dawg}}}))
       (catch Exception e
-        (is (= "Parameter Mismatch: :confirmed_at parameter data not found."
+        (is (= "Parameter Mismatch: :confirmed-at parameter data not found."
                (ex-message e)))))
     (testing "first insert should be cancelled"
       (is (= 2 (count (get-all* @conn)))))))
@@ -128,7 +131,7 @@
                :email "test@test.com"
                :attributes {:bar 1
                             :foo [:a :b :c]}
-               :confirmed_at #inst "2019-02-03"})
+               :confirmed-at #inst "2019-02-03"})
   (is (= [{:people/attributes {:bar 1 :foo ["a" "b" "c"]}
            :people/confirmed_at #inst "2019-02-03"
            :people/email "test@test.com"
