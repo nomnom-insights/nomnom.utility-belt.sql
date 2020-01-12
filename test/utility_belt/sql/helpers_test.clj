@@ -51,9 +51,12 @@
                      :confirmed-at #inst "2019-02-03"})
     (testing  "tx not finished yet so using db-pool no results should be reutnred"
       (is (= 0 (count (people/get-all* @conn)))))
-    (is (= 2 (count (people/get-all* tx)))))
-  (is (= 2 (count (people/get-all* @conn))))
-  (testing "failing within transaction - should not aad rows if an exception is throwna"
+    (testing "when reading via transaction, we get the correct result"
+      (is (= 2 (count (people/get-all* tx))))))
+  (testing "tx is done, we can read via normal conn:"
+    (is (= 2 (count (people/get-all* @conn)))))
+
+  (testing "failing within transaction - should not add rows if an exception is thrown during transaction"
     (helpers/with-transaction [tx @conn {:rollback-only true}]
       (people/add* tx {:name "yest"
                        :email "test@test.com"
@@ -68,5 +71,5 @@
         (catch Exception e
           (is (= "Parameter Mismatch: :confirmed-at parameter data not found."
                  (ex-message e))))))
-    (testing "first insert should be cancelled"
+    (testing "No new data should be inserted"
       (is (= 2 (count (people/get-all* @conn)))))))
