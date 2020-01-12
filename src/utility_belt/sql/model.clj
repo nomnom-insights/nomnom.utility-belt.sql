@@ -1,12 +1,11 @@
 (ns utility-belt.sql.model
   (:require [hugsql.core :as hugsql]
             [clojure.tools.logging :as log]
-            [clojure.string :as str]
             [next.jdbc.result-set :as result-set]
             [hugsql.adapter.next-jdbc :as next-adapter]))
 
 (defn to-kebab [^String s]
-  (str/replace s #"_" "-"))
+  (.replaceAll s "_" "-"))
 
 (defn as-kebab-maps [rs opts]
   (result-set/as-unqualified-modified-maps rs (assoc opts :qualifier-fn to-kebab :label-fn to-kebab)))
