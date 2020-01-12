@@ -9,7 +9,7 @@
 
 (defn execute
   ([connection statement]
-   (execute connection statement :kebab-maps))
-  ([connection statement mode]
+   (execute connection statement {:mode :kebab-maps}))
+  ([connection statement {:keys [mode]}]
    (next.jdbc/execute! connection statement
                        (get model/modes mode))))

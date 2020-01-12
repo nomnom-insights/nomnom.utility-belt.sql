@@ -73,3 +73,45 @@
                  (ex-message e))))))
     (testing "No new data should be inserted"
       (is (= 2 (count (people/get-all* @conn)))))))
+
+(deftest modes-test
+  (people/add* @conn {:name "yest"
+                      :email "test@test.com"
+                      :confirmed-at #inst "2019-02-03"
+                      :attributes {:bar 1
+                                   :foo [:a :b :c]}})
+  (people/add* @conn {:name "yest2"
+                      :email "test2@test.com"
+                      :confirmed-at #inst "2019-02-03"
+                      :attributes {:bar 1
+                                   :foo [:a :b :c]}})
+  (testing "default - kebab-maps"
+    (is (= [{:attributes {:bar 1, :foo ["a" "b" "c"]},
+             :confirmed-at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :email "test@test.com",
+             :name "yest"}
+            {:attributes {:bar 1, :foo ["a" "b" "c"]},
+             :confirmed-at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :email "test2@test.com",
+             :name "yest2"}]
+           (helpers/execute @conn ["select attributes, confirmed_at, email, name  from people"]))))
+  (testing "next.jdbc"
+    (is (= [{:people/attributes {:bar 1, :foo ["a" "b" "c"]},
+             :people/confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :people/email "test@test.com",
+             :people/name "yest"}
+            {:people/attributes {:bar 1, :foo ["a" "b" "c"]},
+             :people/confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :people/email "test2@test.com",
+             :people/name "yest2"}]
+           (helpers/execute @conn ["select attributes, confirmed_at, email, name  from people"] {:mode :next.jdbc}))))
+  (testing "clojure.java.jdbc"
+    (is (= [{:attributes {:bar 1, :foo ["a" "b" "c"]},
+             :confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :email "test@test.com",
+             :name "yest"}
+            {:attributes {:bar 1, :foo ["a" "b" "c"]},
+             :confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :email "test2@test.com",
+             :name "yest2"}]
+           (helpers/execute @conn ["select attributes, confirmed_at, email, name  from people"] {:mode :java.jdbc})))))
