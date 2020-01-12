@@ -62,10 +62,10 @@
                         :foo ["a" "b" "c"]}
            :confirmed-at #inst "2019-06-24"}]
          (people/get-all* @conn {:email "test@test.com"})))
-  (is (= {:next.jdbc/update-count 1}
+  (is (= 1
          (people/set-email* @conn {:old-email "test@test.com"
                                    :new-email "test2@test.com"})))
-  (is (= {:next.jdbc/update-count 1}
+  (is (= 1
          (people/delete* @conn {:email "dat@test.com"})))
   (is (= {:count 1}
          (people/count-all* @conn))))

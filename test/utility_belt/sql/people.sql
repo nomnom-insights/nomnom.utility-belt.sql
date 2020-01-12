@@ -28,13 +28,13 @@ values
 (:name, :email, CAST(:attributes AS jsonb), current_timestamp, :confirmed-at)
 returning name, email, attributes, confirmed_at
 
--- :name set-email* :! :1
+-- :name set-email* :! :n
 update people
 set email = :new-email
 where email = :old-email
 
 
--- :name delete* :! :1
+-- :name delete* :! :n
 delete from people
 where email = :email
 
