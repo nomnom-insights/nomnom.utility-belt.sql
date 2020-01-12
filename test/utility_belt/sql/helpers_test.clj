@@ -26,15 +26,15 @@
                       :attributes {:bar 1
                                    :foo [:a :b :c]}
                       :confirmed-at #inst "2019-02-03"})
-  (is (= [{:people/attributes {:bar 1 :foo ["a" "b" "c"]}
-           :people/confirmed_at #inst "2019-02-03"
-           :people/email "test@test.com"
-           :people/name "yest"}]
+  (is (= [{:attributes {:bar 1 :foo ["a" "b" "c"]}
+           :confirmed-at #inst "2019-02-03"
+           :email "test@test.com"
+           :name "yest"}]
          (map
           #(dissoc %
-                   :people/id
-                   :people/created_at
-                   :people/updated_at)
+                   :id
+                   :created-at
+                   :updated-at)
           (helpers/execute @conn ["select * from people"])))))
 
 (deftest transaction-operation
