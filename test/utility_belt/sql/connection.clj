@@ -11,7 +11,6 @@
    :maximum-pool-size 10
    :database-name (or (System/getenv "PG_DB") "utility_belt_test")})
 
-
 (defn start! [conn-atom]
   (reset! conn-atom (.start (cp/create connection-spec))))
 

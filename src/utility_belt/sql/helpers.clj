@@ -1,7 +1,6 @@
 (ns utility-belt.sql.helpers
   (:require [next.jdbc]
-            [utility-belt.sql.model :as model]
-            ))
+            [utility-belt.sql.model :as model]))
 
 (defmacro with-transaction
   "Wrapper around jdbc transaction macro. Cleans up imports basically"
@@ -11,6 +10,6 @@
 (defn execute
   ([connection statement]
    (execute connection statement :kebab-maps))
- ([connection statement mode]
-  (next.jdbc/execute! connection statement
-                      (get model/modes mode))))
+  ([connection statement mode]
+   (next.jdbc/execute! connection statement
+                       (get model/modes mode))))
