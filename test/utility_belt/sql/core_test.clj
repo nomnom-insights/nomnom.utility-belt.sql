@@ -24,38 +24,44 @@
   (is (= [] (people/get-all* @conn)))
   (is (=  [{:name "yest"
             :email "test@test.com"
+            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
             :attributes {:bar 1
                          :foo ["a" "b" "c" "92731758-98f9-4358-974b-b15c74c917d9"]}
             :confirmed-at #inst "2019-06-24"}]
           (people/add* @conn {:name "yest"
                               :email "test@test.com"
+                              :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
                               :attributes {:bar 1
                                            :foo [:a :b :c #uuid "92731758-98f9-4358-974b-b15c74c917d9"]}
                               :confirmed-at (time/->date-time "2019-06-24")})))
   (is (= [{:name "who"
            :email "dat@test.com"
-           :attributes
-           {:bar 1
-            :foo {:ok "dawg"}}
+           :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d0"
+           :attributes {:bar 1
+                        :foo {:ok "dawg"}}
            :confirmed-at #inst "2018-03-12T00:13:24Z"}]
          (people/add* @conn {:name "who"
                              :email "dat@test.com"
+                             :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d0"
                              :attributes {:bar 1
                                           :foo {:ok :dawg}}
                              :confirmed-at #inst "2018-03-12T00:13:24Z"})))
   (is (= [{:name "who"
            :email "dat@test.com"
+           :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d0"
            :attributes {:bar 1
                         :foo {:ok "dawg"}}
            :confirmed-at #inst  "2018-03-12T00:13:24Z"}
           {:name "yest"
            :email "test@test.com"
+           :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
            :attributes {:bar 1
                         :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
            :confirmed-at #inst "2019-06-24"}]
          (people/get-all* @conn)))
   (is (= [{:name "yest"
            :email "test@test.com"
+           :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
            :attributes {:bar 1
                         :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
            :confirmed-at #inst "2019-06-24"}]

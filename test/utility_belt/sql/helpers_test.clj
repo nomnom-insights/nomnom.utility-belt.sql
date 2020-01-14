@@ -23,10 +23,12 @@
 (deftest raw-execute
   (people/add* @conn {:name "yest"
                       :email "test@test.com"
+                      :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
                       :attributes {:bar 1
                                    :foo [:a :b :c]}
                       :confirmed-at #inst "2019-02-03"})
   (is (= [{:attributes {:bar 1 :foo ["a" "b" "c"]}
+           :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
            :confirmed-at #inst "2019-02-03"
            :email "test@test.com"
            :name "yest"}]
@@ -41,11 +43,13 @@
   (helpers/with-transaction [tx @conn]
     (people/add* tx {:name "yest"
                      :email "test@test.com"
+                     :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
                      :attributes {:bar 1
                                   :foo [:a :b :c]}
                      :confirmed-at #inst "2019-02-03"})
     (people/add* tx {:name "who"
                      :email "dat@test.com"
+                     :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
                      :attributes {:bar 1
                                   :foo {:ok :dawg}}
                      :confirmed-at #inst "2019-02-03"})
@@ -60,6 +64,7 @@
     (helpers/with-transaction [tx @conn {:rollback-only true}]
       (people/add* tx {:name "yest"
                        :email "test@test.com"
+                       :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
                        :confirmed-at #inst "2019-02-03"
                        :attributes {:bar 1
                                     :foo [:a :b :c]}})
@@ -77,11 +82,13 @@
 (deftest modes-test
   (people/add* @conn {:name "yest"
                       :email "test@test.com"
+                      :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
                       :confirmed-at #inst "2019-02-03"
                       :attributes {:bar 1
                                    :foo [:a :b :c]}})
   (people/add* @conn {:name "yest2"
                       :email "test2@test.com"
+                      :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
                       :confirmed-at #inst "2019-02-03"
                       :attributes {:bar 1
                                    :foo [:a :b :c]}})
