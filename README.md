@@ -175,6 +175,11 @@ Wrapper around `next.jdbc/with-trasnaction` macro
 
 Wrapper around `next.jdbc/execute!` but also supports the same modes of converting column names to hash map keys.
 
+# Changelog
+
+- 2020-01-14 - 1.0.0.beta1 - First version based on [next.jdbc](https://github.com/seancorfield/next-jdbc). **Potential breaking changes**
+- 2019-11-01 - 0.2.3 - initial public release
+
 # Authors
 
 <sup>In alphabetical order</sup>
