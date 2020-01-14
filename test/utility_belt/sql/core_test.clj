@@ -25,14 +25,12 @@
   (is (=  [{:name "yest"
             :email "test@test.com"
             :attributes {:bar 1
-                         :foo ["a" "b" "c"]}
+                         :foo ["a" "b" "c" "92731758-98f9-4358-974b-b15c74c917d9"]}
             :confirmed-at #inst "2019-06-24"}]
           (people/add* @conn {:name "yest"
                               :email "test@test.com"
                               :attributes {:bar 1
-                                           :foo [:a
-                                                 :b
-                                                 :c]}
+                                           :foo [:a :b :c #uuid "92731758-98f9-4358-974b-b15c74c917d9"]}
                               :confirmed-at (time/->date-time "2019-06-24")})))
   (is (= [{:name "who"
            :email "dat@test.com"
@@ -53,13 +51,13 @@
           {:name "yest"
            :email "test@test.com"
            :attributes {:bar 1
-                        :foo ["a" "b" "c"]}
+                        :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
            :confirmed-at #inst "2019-06-24"}]
          (people/get-all* @conn)))
   (is (= [{:name "yest"
            :email "test@test.com"
            :attributes {:bar 1
-                        :foo ["a" "b" "c"]}
+                        :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
            :confirmed-at #inst "2019-06-24"}]
          (people/get-all* @conn {:email "test@test.com"})))
   (is (= 1
