@@ -57,21 +57,24 @@
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d0"
            :attributes {:bar 1
                         :foo {:ok "dawg"}}
-           :confirmed-at #inst  "2018-03-12T00:13:24Z"}
+           :confirmed-at #inst  "2018-03-12T00:13:24Z"
+           :id 2}
           {:name "yest"
            :email "test@test.com"
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
            :attributes {:bar 1
                         :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
-           :confirmed-at #inst "2019-06-24"}]
-         (map #(dissoc % :id) (people/get-all* @conn))))
+           :confirmed-at #inst "2019-06-24"
+           :id 1}]
+         (people/get-all* @conn)))
   (is (= [{:name "yest"
+           :id 1
            :email "test@test.com"
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
            :attributes {:bar 1
                         :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
            :confirmed-at #inst "2019-06-24"}]
-         (map #(dissoc % :id) (people/get-all* @conn {:email "test@test.com"}))))
+         (people/get-all* @conn {:email "test@test.com"})))
   (is (= 1
          (people/set-email* @conn {:old-email "test@test.com"
                                    :new-email "test2@test.com"})))
@@ -87,9 +90,11 @@
   (let [people (people/get-users* @conn)]
     (mapv #(people/add-to-squad* @conn {:name "test" :user-id (:id %)}) people)
     (is (= 1 (count (people/get-squad* @conn {:name "test"}))))
+    (is (= [{:name "test"
+             :peeps ["yest" "who"]}]
+           (people/get-squad-names* @conn {:name "test"})))
     (is (= {:name "test"
-            :peeps #{{:name "yest"}
-                     {:name "who"}}}
+            :peeps [{:id 1 :name "yest"}
+                    {:id 2 :name "who"}]}
            (-> (people/get-squad* @conn {:name "test"})
-               first
-               (update :peeps (fn [p] (set (map #(dissoc % :id) p)))))))))
+               first)))))

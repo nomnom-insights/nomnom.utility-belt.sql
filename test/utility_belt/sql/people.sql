@@ -30,8 +30,8 @@ name text not null
 
 
 -- :name delete-all* :! :*
-truncate people;
-truncate users;
+truncate people restart identity;
+truncate users restart identity ;
 truncate squad;
 
 
@@ -80,11 +80,24 @@ values
 (:name, :user-id)
 
 
--- :name get-squad* :1 :?
+-- :name get-squad* :?
 select
   s.name,
   json_agg(u.*) as peeps
 
+from squad s
+
+join users u on (s.user_id = u.id)
+
+where
+
+s.name = :name
+
+group by s.name
+
+-- :name get-squad-names* :?
+select s.name,
+array_agg(u.name) as peeps
 from squad s
 
 join users u on (s.user_id = u.id)

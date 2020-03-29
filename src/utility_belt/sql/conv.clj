@@ -1,32 +1,48 @@
 (ns utility-belt.sql.conv
-  (:require [next.jdbc.result-set :as jdbc.result-set]
-            [next.jdbc.prepare :as jdbc.prepare]
-            [cheshire.core :as json]
-            [clj-time.coerce :as coerce])
-  (:import (clojure.lang IPersistentMap IPersistentVector)
-           (org.postgresql.util PGobject)
-           (org.joda.time DateTime)
-           (java.util Date)
-           (java.sql PreparedStatement)
-           (org.postgresql.jdbc PgArray)))
+  (:require
+    [cheshire.core :as json]
+    [clj-time.coerce :as coerce]
+    [next.jdbc.prepare :as jdbc.prepare]
+    [next.jdbc.result-set :as jdbc.result-set])
+  (:import
+    (clojure.lang
+      IPersistentMap
+      IPersistentVector)
+    (java.sql
+      PreparedStatement)
+    (java.util
+      Date)
+    (org.joda.time
+      DateTime)
+    (org.postgresql.jdbc
+      PgArray)
+    (org.postgresql.util
+      PGobject)))
+
+
+(defn pgobject-json-to-value [val]
+  (let [type (.getType ^PGobject val)
+        value (.getValue ^PGobject val)]
+    (case type
+      "json" (json/parse-string value true)
+      "jsonb" (json/parse-string value true)
+      value)))
+
 
 (extend-protocol jdbc.result-set/ReadableColumn
   PgArray
-  (result-read-column-by-index [val _meta _idx]
+  (read-column-by-index [val _meta _idx]
     (vec (.getArray val)))
   PGobject
   (read-column-by-index [val _meta _idx]
-    (let [type  (.getType ^PGobject val)
-          value (.getValue ^PGobject val)]
-      (case type
-        "json" (json/parse-string value true)
-        "jsonb" (json/parse-string value true)
-        value))))
+    (pgobject-json-to-value val)))
+
 
 (defn value-to-json-pgobject [value]
   (doto (PGobject.)
     (.setType "jsonb")
     (.setValue (json/generate-string value))))
+
 
 (extend-protocol jdbc.prepare/SettableParameter
   Date
