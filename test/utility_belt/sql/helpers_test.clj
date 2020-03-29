@@ -15,6 +15,8 @@
                       (connection/start! conn)
                       (try
                         (people/setup* @conn)
+                        (people/setup-squad* @conn)
+                        (people/setup-users* @conn)
                         (people/delete-all* @conn)
                         (test-fn)
                         (finally
