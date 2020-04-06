@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       - image: circleci/clojure:openjdk-11-lein-2.9.1
-      - image: postgres:9.6
+      - image: postgres:12
         environment:
           POSTGRES_USER: utility_belt
           POSTGRES_PASSWORD: password
