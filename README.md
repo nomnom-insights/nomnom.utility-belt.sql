@@ -177,6 +177,7 @@ Wrapper around `next.jdbc/execute!` but also supports the same modes of converti
 
 # Changelog
 
+- 2020-07-20 - 1.0.0.beta4 - Convert sql.Timestamp to clj datetime
 - 2020-03-30 - 1.0.0.beta3 - Dependency update
 - 2020-03-30 - 1.0.0.beta2 - Bugfix release
 - 2020-01-14 - 1.0.0.beta1 - First version based on [next.jdbc](https://github.com/seancorfield/next-jdbc). **Potential breaking changes**
