@@ -1,13 +1,12 @@
 (ns utility-belt.sql.helpers-test
   (:require [clojure.test :refer :all]
-            ;; -- test helpers
+    ;; -- test helpers
             [utility-belt.sql.connection :as connection]
             [utility-belt.sql.people :as people]
-            ;; -- actual things under test
-            [utility-belt.time :as time]
+    ;; -- actual things under test
             [utility-belt.sql.conv]
             [utility-belt.sql.helpers :as helpers]
-            [utility-belt.sql.model :as model]))
+            [clj-time.coerce :as coerce]))
 
 (def conn (atom nil))
 
@@ -31,7 +30,7 @@
                       :confirmed-at #inst "2019-02-03"})
   (is (= [{:attributes {:bar 1 :foo ["a" "b" "c"]}
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
-           :confirmed-at #inst "2019-02-03"
+           :confirmed-at (coerce/to-date-time "2019-02-03")
            :email "test@test.com"
            :name "yest"}]
          (map
@@ -96,31 +95,31 @@
                                    :foo [:a :b :c]}})
   (testing "default - kebab-maps"
     (is (= [{:attributes {:bar 1, :foo ["a" "b" "c"]},
-             :confirmed-at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :confirmed-at (coerce/to-date-time "2019-02-03T00:00:00"),
              :email "test@test.com",
              :name "yest"}
             {:attributes {:bar 1, :foo ["a" "b" "c"]},
-             :confirmed-at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :confirmed-at (coerce/to-date-time "2019-02-03T00:00:00"),
              :email "test2@test.com",
              :name "yest2"}]
            (helpers/execute @conn ["select attributes, confirmed_at, email, name  from people"]))))
   (testing "next.jdbc"
     (is (= [{:people/attributes {:bar 1, :foo ["a" "b" "c"]},
-             :people/confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :people/confirmed_at (coerce/to-date-time "2019-02-03T00:00:00"),
              :people/email "test@test.com",
              :people/name "yest"}
             {:people/attributes {:bar 1, :foo ["a" "b" "c"]},
-             :people/confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :people/confirmed_at (coerce/to-date-time "2019-02-03T00:00:00"),
              :people/email "test2@test.com",
              :people/name "yest2"}]
            (helpers/execute @conn ["select attributes, confirmed_at, email, name  from people"] {:mode :next.jdbc}))))
   (testing "clojure.java.jdbc"
     (is (= [{:attributes {:bar 1, :foo ["a" "b" "c"]},
-             :confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :confirmed_at (coerce/to-date-time "2019-02-03T00:00:00"),
              :email "test@test.com",
              :name "yest"}
             {:attributes {:bar 1, :foo ["a" "b" "c"]},
-             :confirmed_at #inst "2019-02-03T00:00:00.000000000-00:00",
+             :confirmed_at (coerce/to-date-time "2019-02-03T00:00:00"),
              :email "test2@test.com",
              :name "yest2"}]
            (helpers/execute @conn ["select attributes, confirmed_at, email, name  from people"] {:mode :java.jdbc})))))
