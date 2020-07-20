@@ -9,7 +9,7 @@
       IPersistentMap
       IPersistentVector)
     (java.sql
-      PreparedStatement)
+      PreparedStatement Timestamp)
     (java.util
       Date)
     (org.joda.time
@@ -35,8 +35,10 @@
     (vec (.getArray val)))
   PGobject
   (read-column-by-index [val _meta _idx]
-    (pgobject-json-to-value val)))
-
+    (pgobject-json-to-value val))
+  Timestamp
+  (read-column-by-index [val _meta _idx]
+    (coerce/to-date-time val)))
 
 (defn value-to-json-pgobject [value]
   (doto (PGobject.)
