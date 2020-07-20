@@ -4,11 +4,10 @@
     ;; -- test helpers
     [utility-belt.sql.connection :as connection]
     [utility-belt.sql.conv]
-    [utility-belt.sql.helpers :as helpers]
-    [utility-belt.sql.model :as model]
     [utility-belt.sql.people :as people]
     ;; -- actual things under test
-    [utility-belt.time :as time]))
+    [utility-belt.time :as time]
+    [clj-time.coerce :as coerce]))
 
 
 (def conn (atom nil))
@@ -33,7 +32,7 @@
             :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
             :attributes {:bar 1
                          :foo ["a" "b" "c" "92731758-98f9-4358-974b-b15c74c917d9"]}
-            :confirmed-at #inst "2019-06-24"}]
+            :confirmed-at (coerce/to-date-time "2019-06-24")}]
           (people/add* @conn {:name "yest"
                               :email "test@test.com"
                               :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
@@ -45,7 +44,7 @@
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d0"
            :attributes {:bar 1
                         :foo {:ok "dawg"}}
-           :confirmed-at #inst "2018-03-12T00:13:24Z"}]
+           :confirmed-at (coerce/to-date-time "2018-03-12T00:13:24Z")}]
          (people/add* @conn {:name "who"
                              :email "dat@test.com"
                              :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d0"
@@ -57,14 +56,14 @@
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d0"
            :attributes {:bar 1
                         :foo {:ok "dawg"}}
-           :confirmed-at #inst  "2018-03-12T00:13:24Z"
+           :confirmed-at (coerce/to-date-time "2018-03-12T00:13:24Z")
            :id 2}
           {:name "yest"
            :email "test@test.com"
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
            :attributes {:bar 1
                         :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
-           :confirmed-at #inst "2019-06-24"
+           :confirmed-at (coerce/to-date-time "2019-06-24")
            :id 1}]
          (people/get-all* @conn)))
   (is (= [{:name "yest"
@@ -73,7 +72,7 @@
            :entity-id  #uuid "92731758-98f9-4358-974b-b15c74c917d9"
            :attributes {:bar 1
                         :foo ["a" "b" "c"  "92731758-98f9-4358-974b-b15c74c917d9"]}
-           :confirmed-at #inst "2019-06-24"}]
+           :confirmed-at (coerce/to-date-time "2019-06-24")}]
          (people/get-all* @conn {:email "test@test.com"})))
   (is (= 1
          (people/set-email* @conn {:old-email "test@test.com"
