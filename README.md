@@ -138,10 +138,10 @@ Available modes:
 
 - `:java.jdbc` - lower case, unqalified keys
 - `:next.jdbc` - maps with qualified keys
-- `kebab-maps` - lower case, unqalified keys, `kebab-case`
+- `:kebab-maps` - lower case, unqalified keys, `kebab-case`
 
 
-###  Debugging queries
+###  Queries as vectors
 
 HugSQL has a handy functionality of creating functions returning
 query vectors (can be used with `clojure.java.jdbc` !). They are also
