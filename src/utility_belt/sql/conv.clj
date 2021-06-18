@@ -3,7 +3,8 @@
     [cheshire.core :as json]
     [clj-time.coerce :as coerce]
     [next.jdbc.prepare :as jdbc.prepare]
-    [next.jdbc.result-set :as jdbc.result-set])
+    [next.jdbc.result-set :as jdbc.result-set]
+    [clojure.java.jdbc :as jdbc])
   (:import
     (clojure.lang
       IPersistentMap
@@ -60,6 +61,11 @@
     (.setObject ^PreparedStatement statement idx
                 (value-to-json-pgobject value)))
   IPersistentVector
-  (set-parameter [value statement idx]
-    (.setObject ^PreparedStatement statement idx
-                (value-to-json-pgobject value))))
+  (set-parameter [v ^PreparedStatement s ^long i]
+   (let [conn (.getConnection s)
+          meta (.getParameterMetaData s)
+          type-name (.getParameterTypeName meta i)]
+     (if-let [elem-type (when type-name (second (re-find #"^_(.*)" type-name)))]
+       (.setObject s i (.createArrayOf conn elem-type (to-array v)))
+       (.setObject ^PreparedStatement s i
+                   (value-to-json-pgobject v))))))
