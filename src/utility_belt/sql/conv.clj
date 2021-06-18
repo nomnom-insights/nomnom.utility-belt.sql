@@ -3,8 +3,7 @@
     [cheshire.core :as json]
     [clj-time.coerce :as coerce]
     [next.jdbc.prepare :as jdbc.prepare]
-    [next.jdbc.result-set :as jdbc.result-set]
-    [clojure.java.jdbc :as jdbc])
+    [next.jdbc.result-set :as jdbc.result-set])
   (:import
     (clojure.lang
       IPersistentMap
