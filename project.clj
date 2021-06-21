@@ -1,4 +1,4 @@
-(defproject nomnom/utility-belt.sql "1.0.0.beta5-SNAPSHOT"
+(defproject nomnom/utility-belt.sql "1.0.0.beta6-SNAPSHOT"
   :description "Tools for working with Postgres (queries, connection pool component, helpers etc)"
   :url "https://github.com/nomnom-insights/nomnom.utility-belt.sql"
   :deploy-repositories {"clojars" {:sign-releases false
@@ -8,7 +8,7 @@
   :warn-on-reflection true
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.postgresql/postgresql "42.2.11"]
-                 [seancorfield/next.jdbc "1.0.409"]
+                 [com.github.seancorfield/next.jdbc "1.2.674"]
                  [cheshire "5.10.0"]
                  [clj-time "0.15.2"]
                  [com.layerware/hugsql "0.5.1"]
