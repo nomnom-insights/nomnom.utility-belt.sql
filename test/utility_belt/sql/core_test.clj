@@ -1,6 +1,6 @@
 (ns utility-belt.sql.core-test
   (:require
-    [clojure.test :refer :all]
+    [clojure.test :refer [deftest is use-fixtures]]
     ;; -- test helpers
     [utility-belt.sql.connection :as connection]
     [utility-belt.sql.conv]

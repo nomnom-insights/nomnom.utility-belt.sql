@@ -5,6 +5,9 @@
     </encoder>
   </appender>
 
+  <logger name="com.zaxxer.hikari.HikariDataSource" level="OFF" />
+  <logger name="utility-belt.sql.component.connection-pool" level="OFF" />
+
   <root level="info">
     <appender-ref ref="STDOUT" />
   </root>
