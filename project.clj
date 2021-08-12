@@ -1,4 +1,4 @@
-(defproject nomnom/utility-belt.sql "1.0.1-SNAPSHOT"
+(defproject nomnom/utility-belt.sql "1.0.1"
   :description "Tools for working with Postgres (queries, connection pool component, helpers etc)"
   :url "https://github.com/nomnom-insights/nomnom.utility-belt.sql"
   :deploy-repositories {"clojars" {:sign-releases false

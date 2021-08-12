@@ -177,7 +177,7 @@ Wrapper around `next.jdbc/execute!` but also supports the same modes of converti
 
 # Changelog
 
-- **UNRELEASED** - 1.0.1-SNAPSHOT - Dependency update and switches from CircleCI to GitHub Actions
+- 2021-08-12 - 1.0.1 - Dependency update and switches from CircleCI to GitHub Actions
 - 2021-06-22 - 1.0.0 - Upgrade deps and covert vectors to sql structures
 - 2020-07-20 - 1.0.0.beta4 - Convert sql.Timestamp to clj datetime
 - 2020-03-30 - 1.0.0.beta3 - Dependency update
