@@ -5,7 +5,12 @@
 
 
 (defmacro with-transaction
-  "Wrapper around jdbc transaction macro. Cleans up imports basically"
+  "Wrapper around jdbc transaction macro.   Cleans up imports so we always use ut.sql
+  Suports the same options, eg.
+  [tx conn]
+  and
+  [tx conn opts]
+  + body."
   [binding & body]
   `(next.jdbc/with-transaction ~binding ~@body))
 

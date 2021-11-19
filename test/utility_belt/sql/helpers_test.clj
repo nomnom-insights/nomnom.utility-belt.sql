@@ -47,7 +47,7 @@
 
 (deftest transaction-operation
   (testing "detecting transactions"
-    (helpers/with-transaction [tx @conn]
+    (helpers/with-transaction [tx @conn {:read-only true}]
       (is (true? (helpers/transaction? tx)))
       ;; need to run something to avoid "connection closed" error
       (helpers/execute tx ["select * from now()"]))
