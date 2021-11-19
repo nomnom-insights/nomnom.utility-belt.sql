@@ -13,7 +13,8 @@
                  [clj-time "0.15.2"]
                  [com.layerware/hugsql "0.5.1"]
                  [com.layerware/hugsql-adapter-next-jdbc "0.5.1" :exclusions [seancorfield/next.jdbc]]
-                 [hikari-cp "2.13.0"]]
+                 [hikari-cp "2.13.0" :exclusions [com.zaxxer/HikariCP]]
+                 [com.zaxxer/HikariCP "4.0.3"]]
   :plugins [[lein-cloverage "1.1.1" :exclusions [org.clojure/clojure]]]
   :profiles {:dev
              {:dependencies [[org.clojure/tools.logging "1.1.0"]
