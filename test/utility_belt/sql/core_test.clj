@@ -1,13 +1,13 @@
 (ns utility-belt.sql.core-test
   (:require
+    [clj-time.coerce :as coerce]
     [clojure.test :refer [deftest is use-fixtures]]
     ;; -- test helpers
     [utility-belt.sql.connection :as connection]
     [utility-belt.sql.conv]
     [utility-belt.sql.people :as people]
     ;; -- actual things under test
-    [utility-belt.time :as time]
-    [clj-time.coerce :as coerce]))
+    [utility-belt.time :as time]))
 
 
 (def conn (atom nil))
