@@ -1,4 +1,4 @@
-(defproject nomnom/utility-belt.sql "1.1.0-SNAPSHOT"
+(defproject nomnom/utility-belt.sql "1.1.0"
   :description "Tools for working with Postgres (queries, connection pool component, helpers etc)"
   :url "https://github.com/nomnom-insights/nomnom.utility-belt.sql"
   :deploy-repositories {"clojars" {:sign-releases false
@@ -19,5 +19,5 @@
   :profiles {:dev
              {:dependencies [[org.clojure/tools.logging "1.1.0"]
                              [ch.qos.logback/logback-classic "1.2.7"]
-                             [nomnom/utility-belt "1.3.1"]
+                             [nomnom/utility-belt "1.3.2"]
                              [com.stuartsierra/component "1.0.0"]]}})
