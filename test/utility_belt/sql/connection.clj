@@ -1,5 +1,7 @@
 (ns utility-belt.sql.connection
-  (:require [utility-belt.sql.component.connection-pool :as cp]))
+  (:require
+    [utility-belt.sql.component.connection-pool :as cp]))
+
 
 (def connection-spec
   {:pool-name  "test"
@@ -11,8 +13,10 @@
    :maximum-pool-size 10
    :database-name (or (System/getenv "PG_NAME") "test")})
 
+
 (defn start! [conn-atom]
   (reset! conn-atom (.start (cp/create connection-spec))))
+
 
 (defn stop! [conn-atom]
   (.stop @conn-atom))

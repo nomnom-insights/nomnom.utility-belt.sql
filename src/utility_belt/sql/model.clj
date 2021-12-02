@@ -1,14 +1,18 @@
 (ns utility-belt.sql.model
-  (:require [hugsql.core :as hugsql]
-            [clojure.tools.logging :as log]
-            [next.jdbc.result-set :as result-set]
-            [hugsql.adapter.next-jdbc :as next-adapter]))
+  (:require
+    [clojure.tools.logging :as log]
+    [hugsql.adapter.next-jdbc :as next-adapter]
+    [hugsql.core :as hugsql]
+    [next.jdbc.result-set :as result-set]))
+
 
 (defn to-kebab [^String s]
   (.replaceAll s "_" "-"))
 
+
 (defn as-kebab-maps [rs opts]
   (result-set/as-unqualified-modified-maps rs (assoc opts :qualifier-fn to-kebab :label-fn to-kebab)))
+
 
 (def modes
   {;; compatible with clojure.java.jdbc
@@ -18,14 +22,16 @@
    ;; like clojure.java.jdbc but column names are converted to kebab-case symbols
    :kebab-maps {:builder-fn as-kebab-maps}})
 
+
 (defn load-sql-file
   "Loads given SQL file and injects db function definitions into current namespace"
   ([file]
    (load-sql-file file {:mode :java.jdbc}))
   ([file {:keys [mode]}]
    (hugsql/def-db-fns file
-     {:adapter (next-adapter/hugsql-adapter-next-jdbc
-                (get modes mode))})))
+                      {:adapter (next-adapter/hugsql-adapter-next-jdbc
+                                  (get modes mode))})))
+
 
 (defn load-sql-file-vec-fns
   "Loads given SQL file and injects debug versions of db functions.

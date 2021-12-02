@@ -9,7 +9,8 @@
       IPersistentMap
       IPersistentVector)
     (java.sql
-      PreparedStatement Timestamp)
+      PreparedStatement
+      Timestamp)
     (java.util
       Date)
     (org.joda.time
@@ -40,6 +41,7 @@
   (read-column-by-index [val _meta _idx]
     (coerce/to-date-time val)))
 
+
 (defn value-to-json-pgobject [value]
   (doto (PGobject.)
     (.setType "jsonb")
@@ -61,10 +63,10 @@
                 (value-to-json-pgobject value)))
   IPersistentVector
   (set-parameter [v ^PreparedStatement s ^long i]
-   (let [conn (.getConnection s)
+    (let [conn (.getConnection s)
           meta (.getParameterMetaData s)
           type-name (.getParameterTypeName meta i)]
-     (if-let [elem-type (when type-name (second (re-find #"^_(.*)" type-name)))]
-       (.setObject s i (.createArrayOf conn elem-type (to-array v)))
-       (.setObject ^PreparedStatement s i
-                   (value-to-json-pgobject v))))))
+      (if-let [elem-type (when type-name (second (re-find #"^_(.*)" type-name)))]
+        (.setObject s i (.createArrayOf conn elem-type (to-array v)))
+        (.setObject ^PreparedStatement s i
+                    (value-to-json-pgobject v))))))

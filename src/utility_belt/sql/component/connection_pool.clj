@@ -1,8 +1,10 @@
 (ns utility-belt.sql.component.connection-pool
-  (:require [hikari-cp.core :as hikari]
-            [clojure.tools.logging :as log]
-            [next.jdbc.protocols :as jdbc.protocols]
-            [com.stuartsierra.component :as component]))
+  (:require
+    [clojure.tools.logging :as log]
+    [com.stuartsierra.component :as component]
+    [hikari-cp.core :as hikari]
+    [next.jdbc.protocols :as jdbc.protocols]))
+
 
 (defrecord ConnectionPool [config datasource]
   component/Lifecycle
@@ -29,6 +31,7 @@
   jdbc.protocols/Sourceable
   (get-datasource [this]
     (:datasource this)))
+
 
 (defn create [config]
   (map->ConnectionPool {:config config}))
